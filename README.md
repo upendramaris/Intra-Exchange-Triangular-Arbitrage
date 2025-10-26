@@ -33,6 +33,10 @@ make run
 
 See `scripts/` for the underlying shell helpers.
 
+### Local environment overrides
+
+Docker services resolve the Postgres host as `db`, but commands executed directly on the host (e.g. `poetry run scripts/migrate.sh`) need `localhost`. Create a `.env.local` file for host-only tweaks—anything defined there overrides the values from `.env`. You can either redefine `DB_URL` entirely or set `LOCAL_DB_URL` / `LOCAL_DB_HOST` so migrations and the app point at your local Postgres instance without touching the compose-friendly defaults.
+
 ### Binance WebSocket access
 
-The default market data feed hits `wss://stream.binance.com:9443`. If Binance blocks your region (the logs will show repeated `HTTP 451` reconnects), override the endpoint in `.env` with `BINANCE_WS_BASE_URL=wss://stream.binance.us:9443` or another accessible relay, then restart `make run`.
+The client now cycles through the URLs defined in `BINANCE_WS_BASE_URL` and `BINANCE_WS_ALT_URLS` (comma-separated). By default we try the global endpoint first and fall back to `wss://stream.binance.us:9443` whenever the server replies with HTTP 451. If both are blocked in your region, drop your preferred relay(s) into `BINANCE_WS_ALT_URLS` or override the base URL entirely in `.env` / `.env.local`, then restart `make run`.
