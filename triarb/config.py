@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
     binance_api_key: str | None = None
     binance_api_secret: str | None = None
+    binance_ws_base_url: str = Field(default="wss://stream.binance.com:9443", alias="BINANCE_WS_BASE_URL")
 
     @computed_field
     @property

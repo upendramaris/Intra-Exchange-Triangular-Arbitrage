@@ -32,3 +32,7 @@ make run
 | `make api` | Launch FastAPI admin server |
 
 See `scripts/` for the underlying shell helpers.
+
+### Binance WebSocket access
+
+The default market data feed hits `wss://stream.binance.com:9443`. If Binance blocks your region (the logs will show repeated `HTTP 451` reconnects), override the endpoint in `.env` with `BINANCE_WS_BASE_URL=wss://stream.binance.us:9443` or another accessible relay, then restart `make run`.

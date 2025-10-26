@@ -19,7 +19,8 @@ class BinanceWsClient:
         self.store = store
         self.settings = get_settings()
         streams = "/".join([f"{symbol.lower().replace('/', '')}@depth5@100ms" for symbol in symbols])
-        self.uri = f"wss://stream.binance.com:9443/stream?streams={streams}"
+        base = self.settings.binance_ws_base_url.rstrip("/")
+        self.uri = f"{base}/stream?streams={streams}"
         self._task: asyncio.Task | None = None
 
     async def start(self) -> None:
